@@ -21,7 +21,7 @@ public class Polygon {
      */
     public Polygon(){
         autoCorrect = defaultAutoCorrect;
-        sides = 4;
+        sides = 3;
         sideLength = 1.0;
         this.sideLength = Math.abs(sideLength);
         classifyShape();
