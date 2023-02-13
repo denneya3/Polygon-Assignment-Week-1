@@ -1,3 +1,5 @@
+//Note: assignment does not state that the toString() method must print out if invalidity checks reassigned values
+
 public class Polygon {
     //class variables
     private int sides; //priority over shape type
@@ -6,7 +8,7 @@ public class Polygon {
     private String secondaryShapeName;
     private boolean undocumentedShape;
     private boolean autoCorrect; // determines whether the program will autocorrect invalid shapes/sides when mutated
-    boolean defaultAutoCorrect = false; //default value for autoCorrect
+    boolean defaultAutoCorrect = true; //default value for autoCorrect
 
     //utility variables
     final String[] shapeNames = {"triangle","square","pentagon","hexagon","heptagon","octagon","nonagon","decagon"};
@@ -101,12 +103,10 @@ public class Polygon {
      *Sets the number of sides of the polygon based on its shape name.
      */
     private void classifySides(){
-        for (String s: shapeNames){
-            for (int[] l : sideIndices){
-                if (shapeNames[l[1]].equals(s)){
-                    sides = l[0];
-                    return;
-                }
+        for (int[] l : sideIndices){
+            if (shapeNames[l[1]].equals(shape)){
+                sides = l[0];
+                return;
             }
         }
     }
@@ -131,17 +131,19 @@ public class Polygon {
      */
     public void setShape(String shape){
         if (autoCorrect){
+
             for (String s: shapeNames){
                 if (s.equals(shape)){
                     this.shape = shape; //shape exists
                     classifySides();
+                    updateSecondaryShapeName(); //must be after classifySides
                     return;
                 }
             }
-            return;
         } else {
             this.shape = shape;
         }
+
     }
 
     /**
@@ -161,6 +163,9 @@ public class Polygon {
      * @param length - the new value of sideLength that will be set for Polygon object
      */
     public void setSideLength(double length){
+        if (autoCorrect && (length<=0)){
+            return;
+        }
         sideLength = length;
     }
 
